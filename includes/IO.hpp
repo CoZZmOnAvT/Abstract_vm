@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:46:12 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/19 21:20:30 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/19 21:23:37 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ class IO
 		void	parse_stdi(Memory & stack);
 
 	private:
-		CPU		&_cpu;
-		IO();
+		bool	_exit_found;
 };
 
 #endif
