@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/19 17:13:02 by pgritsen          #+#    #+#              #
-#    Updated: 2018/06/19 17:23:22 by pgritsen         ###   ########.fr        #
+#    Updated: 2018/06/19 20:44:04 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,12 @@ CFLAGS		=	-Wextra -Werror -Wall -g3
 
 HDRSDIR		=	./includes
 
-HDRS		=	$(addprefix $(HDRSDIR)/, avm.hpp)
+HDRS		=	$(addprefix $(HDRSDIR)/, avm.hpp CPU.hpp IO.hpp Memory.hpp		\
+				IOperand.hpp Operand.hpp)
 
 SRCSDIR		=	./sources
 
-SRCS		=	main.cpp
+SRCS		=	main.cpp CPU.cpp IO.cpp Memory.cpp Operand.cpp
 
 OBJDIR		=	./obj
 

@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   avm.hpp                                            :+:      :+:    :+:   */
+/*   CPU.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/19 17:20:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/19 21:16:51 by pgritsen         ###   ########.fr       */
+/*   Created: 2018/06/19 18:27:59 by pgritsen          #+#    #+#             */
+/*   Updated: 2018/06/19 21:17:42 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AVM_HPP
-# define AVM_HPP
+#include "CPU.hpp"
 
-# include <regex>
-# include <vector>
-# include <iostream>
-# include <string>
-# include <exception>
+CPU::CPU(void) {}
 
-#endif
+CPU::~CPU(void)
+{
+	
+}
+
+void	CPU::start(int ac, char *av[])
+{
+	if (ac != 2)
+		this->_io.parse_stdi(this->_stack);
+	else if (ac == 2)
+		this->_io.parse_file(av[1], this->_stack);
+	else
+		std::cout << "AVM: Incorrect number of parameters!" << std::endl;
+}

@@ -1,22 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   avm.hpp                                            :+:      :+:    :+:   */
+/*   Operand.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/19 17:20:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/19 21:16:51 by pgritsen         ###   ########.fr       */
+/*   Created: 2018/06/19 20:42:56 by pgritsen          #+#    #+#             */
+/*   Updated: 2018/06/19 20:43:05 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AVM_HPP
-# define AVM_HPP
-
-# include <regex>
-# include <vector>
-# include <iostream>
-# include <string>
-# include <exception>
-
-#endif
+#include "Operand.hpp"

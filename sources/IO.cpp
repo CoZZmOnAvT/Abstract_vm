@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   avm.hpp                                            :+:      :+:    :+:   */
+/*   IO.cpp                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/19 17:20:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/19 21:16:51 by pgritsen         ###   ########.fr       */
+/*   Created: 2018/06/19 18:45:21 by pgritsen          #+#    #+#             */
+/*   Updated: 2018/06/19 21:17:28 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AVM_HPP
-# define AVM_HPP
+#include "IO.hpp"
 
-# include <regex>
-# include <vector>
-# include <iostream>
-# include <string>
-# include <exception>
+IO::IO(void) {}
+IO::~IO(void) {}
 
-#endif
+void	IO::parse_file(const char *file_name, Memory & stack)
+{
+	
+}
+
+void	IO::parse_stdi(Memory & stack)
+{
+	(void)stack;
+}
