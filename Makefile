@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/19 17:13:02 by pgritsen          #+#    #+#              #
-#    Updated: 2018/06/19 20:44:04 by pgritsen         ###   ########.fr        #
+#    Updated: 2018/06/21 14:39:15 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	avm
 
 CC			=	g++
 
-CFLAGS		=	-Wextra -Werror -Wall -g3
+CFLAGS		=	-Wextra -Werror -Wall -std=c++11 -g3
 
 HDRSDIR		=	./includes
 

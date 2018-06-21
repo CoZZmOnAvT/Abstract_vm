@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:34:57 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/19 21:16:42 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/21 20:17:22 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ class CPU
 		~CPU(void);
 
 		void	start(int ac, char *av[]);
+		void	analyze(const std::string & s);
 
 	private:
 		Memory	_stack;
 		IO		_io;
+
+		void	_action(std::string cmd);
+		void	_action(std::string cmd, std::string type, std::string value);
 };
 
 #endif
