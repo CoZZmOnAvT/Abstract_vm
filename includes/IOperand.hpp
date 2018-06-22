@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 20:30:49 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/22 13:15:26 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/22 14:00:04 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ class IOperand
 			Int8 = 0, Int16, Int32, Float, Double
 		};
 
-		virtual int getPrecision(void) const = 0;
-		virtual eOperandType getType(void) const = 0;
+		virtual int				getPrecision(void) const = 0;
+		virtual eOperandType	getType(void) const = 0;
 		// virtual IOperand const * operator + (IOperand const & rhs) const = 0;
 		// virtual IOperand const * operator - (IOperand const & rhs) const = 0;
 		// virtual IOperand const * operator * (IOperand const & rhs) const = 0;

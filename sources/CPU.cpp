@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:27:59 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/22 13:16:16 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/22 19:06:15 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	CPU::analyze(const std::string & s)
 	if (s.empty())
 		return ;
 
-	std::regex	expr("\\s*([^\\s()]+)(\\s*([^\\s()]*)\\(([^\\s())]*)\\))?\\s*");
+	std::regex	expr("\\s*([^\\s()]+)(\\s+([^\\s()]*)\\(([^\\s())]*)\\))?\\s*");
 	std::smatch sm;
 
 	if (std::regex_match(s, sm, expr))
@@ -79,5 +79,18 @@ void	CPU::_action(std::string cmd)
 
 void	CPU::_action(std::string cmd, std::string type, std::string value)
 {
-	std::cout << "Multiple: |" << cmd << "|: |" << type << "| -> |" << value << "|" << std::endl;
+	static const std::unordered_map < std::string, IOperand::eOperandType >	types = {
+		{"int8", IOperand::Int8}, {"int16", IOperand::Int16},
+		{"int32", IOperand::Int32}, {"float", IOperand::Float},
+		{"double", IOperand::Double},
+	};
+
+	auto	it = types.find(type);
+	if (it == types.end())
+		throw std::invalid_argument((std::string("Unknown type name '") + type + "'").c_str());
+	const IOperand	*op = this->_stack.createOperand(it->second, value);
+	if (cmd == "push")
+		this->_stack.addValue(op);
+	else
+		throw std::invalid_argument((std::string("Invalid command name '") + cmd + "'").c_str());
 }
