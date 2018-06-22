@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:27:59 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/21 20:36:02 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/22 13:16:16 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void	CPU::_action(std::string cmd)
 {
 	if (cmd == "exit")
 		exit (0);
+	std::vector < std::unique_ptr < IOperand > >	stack;
+
+	stack.push_back(std::make_unique < Operand < int8_t > >());
+	stack.push_back(std::make_unique < Operand < int16_t > >());
+	stack.push_back(std::make_unique < Operand < double > >());
 	// std::vector < std::tuple < std::string, void (*)(void *), void * > >	cmds = {
 	// 	{ "exit", reinterpret_cast<void (*)(void *)>(&exit), (int []){0} }
 	// };

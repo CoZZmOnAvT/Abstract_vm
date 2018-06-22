@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/19 17:13:02 by pgritsen          #+#    #+#              #
-#    Updated: 2018/06/21 14:39:15 by pgritsen         ###   ########.fr        #
+#    Updated: 2018/06/22 12:57:13 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	avm
 
 CC			=	g++
 
-CFLAGS		=	-Wextra -Werror -Wall -std=c++11 -g3
+CFLAGS		=	-Wextra -Werror -Wall -std=c++14 -g3
 
 HDRSDIR		=	./includes
 
@@ -23,7 +23,7 @@ HDRS		=	$(addprefix $(HDRSDIR)/, avm.hpp CPU.hpp IO.hpp Memory.hpp		\
 
 SRCSDIR		=	./sources
 
-SRCS		=	main.cpp CPU.cpp IO.cpp Memory.cpp Operand.cpp
+SRCS		=	main.cpp CPU.cpp IO.cpp Memory.cpp
 
 OBJDIR		=	./obj
 
