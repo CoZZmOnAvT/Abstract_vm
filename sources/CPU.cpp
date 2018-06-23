@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:27:59 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/22 19:06:15 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:13:12 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 CPU::CPU(void) {}
 
+CPU::CPU(const CPU & elem) { *this = elem; }
+
 CPU::~CPU(void) {}
+
+CPU		& CPU::operator = (const CPU & elem)
+{
+	this->_stack = elem._stack;
+	this->_io = elem._io;
+	return (*this);
+}
 
 void	CPU::start(int ac, char *av[])
 {
-	(void)this->_stack;
 	try
 	{
 		if (ac == 1)
@@ -60,21 +68,21 @@ void	CPU::analyze(const std::string & s)
 void	CPU::_action(std::string cmd)
 {
 	if (cmd == "exit")
-		exit (0);
-	std::vector < std::unique_ptr < IOperand > >	stack;
+	{
+		this->_io.quit = true;
+		return ;
+	}
+	std::unordered_map < std::string, void(Memory::*)() >	cmds = {
+		{"add", &Memory::addValue}, {"sub", &Memory::subValue},
+		{"mul", &Memory::mulValue}, {"div", &Memory::divValue},
+		{"mod", &Memory::modValue}, {"dump", &Memory::dump},
+		{"print", &Memory::print}, {"pop", &Memory::pop}
+	};
 
-	stack.push_back(std::make_unique < Operand < int8_t > >());
-	stack.push_back(std::make_unique < Operand < int16_t > >());
-	stack.push_back(std::make_unique < Operand < double > >());
-	// std::vector < std::tuple < std::string, void (*)(void *), void * > >	cmds = {
-	// 	{ "exit", reinterpret_cast<void (*)(void *)>(&exit), (int []){0} }
-	// };
-
-	// auto	it = find_if(cmds.begin(), cmds.end(), [&cmd](const std::tuple < std::string, void (*)(void *), void * > & c){ return (std::get<0>(c) == cmd); });
-	// if (it != cmds.end())
-	// 	std::get<1>(*it)(std::get<2>(*it));
-	// else
-	// 	throw std::invalid_argument((std::string("Warning: Unknown command '") + cmd + "'").c_str());
+	auto	it = cmds.find(cmd);
+	if (it == cmds.end())
+		throw std::invalid_argument((std::string("Invalid command name '") + cmd + "'").c_str());
+	(this->_stack.*(cmds[cmd]))();
 }
 
 void	CPU::_action(std::string cmd, std::string type, std::string value)
@@ -88,9 +96,13 @@ void	CPU::_action(std::string cmd, std::string type, std::string value)
 	auto	it = types.find(type);
 	if (it == types.end())
 		throw std::invalid_argument((std::string("Unknown type name '") + type + "'").c_str());
-	const IOperand	*op = this->_stack.createOperand(it->second, value);
+
+	std::unique_ptr <const IOperand>	op = std::unique_ptr < const IOperand > (this->_stack.createOperand(it->second, value));
+
 	if (cmd == "push")
-		this->_stack.addValue(op);
+		this->_stack.pushValue(op.release());
+	else if (cmd == "assert")
+		this->_stack.assertValue(op.get());
 	else
 		throw std::invalid_argument((std::string("Invalid command name '") + cmd + "'").c_str());
 }

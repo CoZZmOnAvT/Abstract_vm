@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:46:12 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/21 20:08:59 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:08:59 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,21 @@ class IO
 {
 	public:
 		IO(void);
+		IO(const IO & elem);
 		virtual ~IO(void);
 
+		IO	& operator = (const IO & elem);
+
 		bool	verbose;
+		bool	quit;
 
 		void	parse(std::string file_name, CPU & cpu);
 		void	parse(CPU & cpu);
 		void	reset_state(void);
 
 	private:
-		bool		_exit_found;
 		size_t		_line;
+		size_t		_cmds;
 		std::string	_source_name;
 
 		std::string					& _trim(std::string & s);

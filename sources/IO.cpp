@@ -6,23 +6,34 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:21 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/21 20:14:13 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:10:01 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "IO.hpp"
 #include "CPU.hpp"
 
-IO::IO(void) : verbose(true), _exit_found(false), _line(0) {}
+IO::IO(void) : verbose(true), quit(false), _line(0), _cmds(0) {}
+IO::IO(const IO & elem) { *this = elem; }
 IO::~IO(void)
 {
 	if (this->verbose)
 	{
-		if (this->_line == 0)
-			std::cout << "AVM: Warning: Empty input" << std::endl;
-		else if (this->_exit_found == false)
+		if (this->quit == false)
 			std::cout << "AVM: Fatal Error: No exit statement found!" << std::endl;
+		else if (this->_cmds < 2)
+			std::cout << "AVM: Warning: Empty input" << std::endl;
 	}
+}
+
+IO							& IO::operator = (const IO & elem)
+{
+	this->verbose = elem.verbose;
+	this->quit = elem.quit;
+	this->_line = elem._line;
+	this->_cmds = elem._cmds;
+	this->_source_name = elem._source_name;
+	return (*this);
 }
 
 void						IO::parse(std::string file_name, CPU & cpu)
@@ -40,11 +51,15 @@ void						IO::parse(std::string file_name, CPU & cpu)
 	{
 		std::string		line;
 
-		while (getline(file, line))
+		while (this->quit == false && getline(file, line))
 			try
 			{
 				this->_line++;
+				if (line[0] == ';')
+					continue ;
 				cpu.analyze(this->_trim(line));
+				if (line.empty() == false)
+					this->_cmds++;
 			}
 			catch (std::exception & e)
 			{
@@ -59,14 +74,29 @@ void						IO::parse(std::string file_name, CPU & cpu)
 
 void						IO::parse(CPU & cpu)
 {
-	(void)cpu;
 	this->_source_name.erase(this->_source_name.begin(), this->_source_name.end());
+	std::string		line;
+
+	while (this->quit == false && getline(std::cin, line))
+		try
+		{
+			this->_line++;
+			if (line[0] == ';')
+				continue ;
+			cpu.analyze(this->_trim(line));
+			if (line.empty() == false)
+				this->_cmds++;
+		}
+		catch (std::exception & e)
+		{
+			if (this->verbose)
+				std::cout << "AVM: Line " << this->_line << ": " << e.what() << std::endl;
+		}
 }
 
 void						IO::reset_state(void)
 {
 	this->_line = 0;
-	this->_exit_found = 0;
 }
 
 std::string					& IO::_trim(std::string & s)

@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:34:57 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/22 12:57:40 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:12:03 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 
 # include "avm.hpp"
 # include "Memory.hpp"
+# include "Operand.hpp"
 # include "IO.hpp"
 
 class CPU
 {
 	public:
 		CPU(void);
-		~CPU(void);
+		CPU(const CPU & elem);
+		virtual ~CPU(void);
+
+		CPU	& operator = (const CPU & elem);
 
 		void	start(int ac, char *av[]);
 		void	analyze(const std::string & s);

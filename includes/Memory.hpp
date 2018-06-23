@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:46:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/22 19:04:18 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:04:46 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,35 @@
 # define MEMORY_HPP
 
 #include "avm.hpp"
-#include "Operand.hpp"
+#include "IOperand.hpp"
+
+template <typename T>
+class	Operand;
 
 class Memory
 {
 	public:
 		Memory();
-		~Memory();
+		Memory(const Memory & obj);
+		virtual ~Memory();
+
+		Memory			& operator = (const Memory & obj);
 
 		const IOperand	*createOperand(IOperand::eOperandType type, std::string const & value) const;
-		void			addValue(const IOperand * op);
+		void			addValue(void);
+		void			subValue(void);
+		void			mulValue(void);
+		void			divValue(void);
+		void			modValue(void);
+		void			dump(void);
+		void			print(void);
+		void			pop(void);
+		void			pushValue(const IOperand * op);
+		void			assertValue(const IOperand * op) const;
+		void			runtimeOverflow(long double value, IOperand::eOperandType type) const;
+		void			runtimeOverflow(long long value, IOperand::eOperandType type) const;
 	private:
-		std::vector < const IOperand * > _data;
+		std::vector < std::unique_ptr<const IOperand> > _data;
 
 		void			_check_value(std::string const & value, IOperand::eOperandType type) const;
 
