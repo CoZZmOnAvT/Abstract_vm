@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:32 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:04:49 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/23 19:17:07 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void			Memory::print(void)
 
 void			Memory::pop(void)
 {
-	if (this->_data.size() < 2)
+	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
 	this->_data.pop_back();
 }
