@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/22 12:48:36 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:08:48 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 18:39:00 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,32 +45,59 @@ class	Operand : public IOperand
 
 		bool				operator == (IOperand const & rhs) const
 		{
-			auto	ptr1 = dynamic_cast < const Operand < int8_t > * >(&rhs);
-			auto	ptr2 = dynamic_cast < const Operand < int16_t > * >(&rhs);
-			auto	ptr3 = dynamic_cast < const Operand < int32_t > * >(&rhs);
-			auto	ptr4 = dynamic_cast < const Operand < float > * >(&rhs);
-			auto	ptr5 = dynamic_cast < const Operand < double > * >(&rhs);
+			if (rhs.getType() != this->getType())
+				throw std::runtime_error("Assertion wrong. Types are not equal");
+			else if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
+					&& this->getValueFloat(&rhs) != static_cast<long double>(this->getValue()))
+				throw std::runtime_error("Assertion wrong. Different values");
+			else if (this->getValueInt(&rhs) != static_cast<long long>(this->getValue()))
+				throw std::runtime_error("Assertion wrong. Different values");
+			return (true);
+		}
 
-			auto	compare = [&](auto *op) -> bool {
-				if (op->getType() != this->getType())
-					throw std::runtime_error("Assertion wrong. Types are not equal");
-				else if (op->getValue() != this->getValue())
-					throw std::runtime_error("Assertion wrong. Different values");
+		bool				operator != (IOperand const & rhs) const
+		{
+			return (!(*this == rhs));
+		}
+
+		bool				operator > (IOperand const & rhs) const
+		{
+			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
+					&& this->getValueFloat(&rhs) > static_cast<long double>(this->getValue()))
 				return (true);
-			};
+			else if (this->getValueInt(&rhs) > static_cast<long double>(this->getValue()))
+				return (true);
+			return (false);
+		}
 
-			if (ptr1)
-				return (compare(ptr1));
-			else if (ptr2)
-				return (compare(ptr2));
-			else if (ptr3)
-				return (compare(ptr3));
-			else if (ptr4)
-				return (compare(ptr4));
-			else if (ptr5)
-				return (compare(ptr5));
-			else
-				throw std::runtime_error("Unknown error");
+		bool				operator < (IOperand const & rhs) const
+		{
+			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
+					&& this->getValueFloat(&rhs) < static_cast<long double>(this->getValue()))
+				return (true);
+			else if (this->getValueInt(&rhs) < static_cast<long long>(this->getValue()))
+				return (true);
+			return (false);
+		}
+
+		bool				operator >= (IOperand const & rhs) const
+		{
+			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
+					&& this->getValueFloat(&rhs) >= static_cast<long double>(this->getValue()))
+				return (true);
+			else if (this->getValueInt(&rhs) >= static_cast<long long>(this->getValue()))
+				return (true);
+			return (false);
+		}
+
+		bool				operator <= (IOperand const & rhs) const
+		{
+			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
+					&& this->getValueFloat(&rhs) <= static_cast<long double>(this->getValue()))
+				return (true);
+			else if (this->getValueInt(&rhs) <= static_cast<long long>(this->getValue()))
+				return (true);
+			return (false);
 		}
 
 		const IOperand		* operator + (IOperand const & rhs) const
@@ -166,6 +193,35 @@ class	Operand : public IOperand
 				this->memptr->runtimeOverflow(result, type);
 				return (this->memptr->createOperand(type, std::to_string(result)));
 			}
+		}
+
+		IOperand const		* avg(IOperand const & rhs) const
+		{
+			IOperand::eOperandType	type = static_cast<IOperand::eOperandType>(std::max(this->getPrecision(), rhs.getPrecision()));
+
+			if (type == IOperand::Float || type == IOperand::Double)
+			{
+				long double	result = (static_cast<long double>(this->getValue()) + this->getValueFloat(&rhs)) / 2.0L;
+				this->memptr->runtimeOverflow(result, type);
+				return (this->memptr->createOperand(type, std::to_string(result)));
+			}
+			else
+			{
+				long long	result = (static_cast<long long>(this->getValue()) +  this->getValueInt(&rhs)) / 2;
+				this->memptr->runtimeOverflow(result, type);
+				return (this->memptr->createOperand(type, std::to_string(result)));
+			}
+		}
+
+		IOperand const		* pow(IOperand const & rhs) const
+		{
+			IOperand::eOperandType	type = this->getType();
+			long double	result = std::pow(static_cast<long double>(this->getValue()), this->getValueFloat(&rhs));
+
+			this->memptr->runtimeOverflow(result, this->getType());
+			if (type != IOperand::Float && type != IOperand::Double)
+				return (this->memptr->createOperand(this->getType(), std::to_string(static_cast<long long>(result))));
+			return (this->memptr->createOperand(this->getType(), std::to_string(result)));
 		}
 
 		const std::string 	& toString(void) const

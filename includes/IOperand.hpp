@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 20:30:49 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 16:11:29 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 18:31:22 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,22 @@ class IOperand
 			Int8 = 0, Int16, Int32, Float, Double
 		};
 
-		virtual int				getPrecision(void) const = 0;
-		virtual eOperandType	getType(void) const = 0;
-		virtual bool			operator == (IOperand const & rhs) const = 0;
-		virtual IOperand const * operator + (IOperand const & rhs) const = 0;
-		virtual IOperand const * operator - (IOperand const & rhs) const = 0;
-		virtual IOperand const * operator * (IOperand const & rhs) const = 0;
-		virtual IOperand const * operator / (IOperand const & rhs) const = 0;
-		virtual IOperand const * operator % (IOperand const & rhs) const = 0;
-		virtual std::string const & toString(void) const = 0;
+		virtual int					getPrecision(void) const = 0;
+		virtual eOperandType		getType(void) const = 0;
+		virtual bool				operator == (IOperand const & rhs) const = 0;
+		virtual bool				operator != (IOperand const & rhs) const = 0;
+		virtual bool				operator <  (IOperand const & rhs) const = 0;
+		virtual bool				operator >  (IOperand const & rhs) const = 0;
+		virtual bool				operator >= (IOperand const & rhs) const = 0;
+		virtual bool				operator <= (IOperand const & rhs) const = 0;
+		virtual IOperand const		* operator + (IOperand const & rhs) const = 0;
+		virtual IOperand const		* operator - (IOperand const & rhs) const = 0;
+		virtual IOperand const		* operator * (IOperand const & rhs) const = 0;
+		virtual IOperand const		* operator / (IOperand const & rhs) const = 0;
+		virtual IOperand const		* operator % (IOperand const & rhs) const = 0;
+		virtual IOperand const		* avg(IOperand const & rhs) const = 0;
+		virtual IOperand const		* pow(IOperand const & rhs) const = 0;
+		virtual std::string const	& toString(void) const = 0;
 };
 
 #endif

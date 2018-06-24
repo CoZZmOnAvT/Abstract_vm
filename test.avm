@@ -1,0 +1,210 @@
+; ************************************************************************** ;
+;                                                                            ;
+;                                                        :::      ::::::::   ;
+;   test.avm                                           :+:      :+:    :+:   ;
+;                                                    +:+ +:+         +:+     ;
+;   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        ;
+;                                                +#+#+#+#+#+   +#+           ;
+;   Created: 2018/06/19 18:45:32 by pgritsen          #+#    #+#             ;
+;   Updated: 2018/06/24 15:32:31 by pgritsen         ###   ########.fr       ;
+;                                                                            ;
+; ************************************************************************** ;
+
+push int8(7)
+push int8(42)
+push int8(5)
+push int8(3)
+avg
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+max
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+min
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(35)
+add
+assert int8(42)
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(21)
+sub
+dump
+assert int8(21)
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(2)
+mul
+dump
+assert int8(42)
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(2)
+div
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+assert int8(21)
+push int8(6)
+mod
+assert int8(3)
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(14)
+mul
+assert int8(42)
+dump
+push int8(45)
+print
+print
+print
+push int8(10)
+print
+pop
+pop
+push int8(110) ; 'n'
+push int8(101) ; 'e'
+push int8(115) ; 's'
+push int8(116) ; 't'
+push int8(105) ; 'i'
+push int8(114) ; 'r'
+push int8(103) ; 'g'
+push int8(112) ; 'p'
+push int8(32)  ; ' '
+push int8(45)  ; '-'
+push int8(32)  ; ' '
+push int8(121) ; 'y'
+push int8(114) ; 'r'
+push int8(111) ; 'o'
+push int8(116) ; 't'
+push int8(99)  ; 'c'
+push int8(97)  ; 'a'
+push int8(70)  ; 'F'
+push int8(32)  ; ' '
+push int8(84)  ; 'T'
+push int8(73)  ; 'I'
+push int8(78)  ; 'N'
+push int8(85)  ; 'U'
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+print
+pop
+push int8(10)  ; '\n'
+print
+pop
+dump
+push int32(2)
+push int32(30)
+pow
+dec--
+push int8(2)
+mul
+inc++
+dump
+exit

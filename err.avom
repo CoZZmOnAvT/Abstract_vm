@@ -1,0 +1,53 @@
+; ************************************************************************** ;
+;                                                                            ;
+;                                                        :::      ::::::::   ;
+;   err.avom                                           :+:      :+:    :+:   ;
+;                                                    +:+ +:+         +:+     ;
+;   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        ;
+;                                                +#+#+#+#+#+   +#+           ;
+;   Created: 2018/06/19 18:45:32 by pgritsen          #+#    #+#             ;
+;   Updated: 2018/06/24 15:32:31 by pgritsen         ###   ########.fr       ;
+;                                                                            ;
+; ************************************************************************** ;
+
+push int32(42) 
+push int32(33) 
+add ;poney 
+push float(44.55) 
+mul 
+push double(42.42) 
+;commentaire de ouf 
+push int32(42) 
+pop 
+assert double(42.42) 
+push int32(32) 
+push int32(0) 
+div 
+push int16(999999999999999999999999999) 
+push int16(32 ;) 
+pu int(32)) 
+clear
+pop
+push int32(42) 
+assert int32(0)
+clear 
+push int32(42) 
+add 
+
+push int8(33) ;! 
+push int8(112) ;p 
+push int8(111) ;o 
+push int8(108) ;l 
+push int8(112) ;p 
+clear
+print 
+pop 
+print 
+pop 
+print 
+pop 
+print 
+pop 
+print 
+pop 
+exit 

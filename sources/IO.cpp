@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:21 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:10:01 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 13:57:04 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ IO::~IO(void)
 	if (this->verbose)
 	{
 		if (this->quit == false)
-			std::cout << "AVM: Fatal Error: No exit statement found!" << std::endl;
+			std::cerr << "AVM: Fatal Error: No exit statement found!" << std::endl;
 		else if (this->_cmds < 2)
-			std::cout << "AVM: Warning: Empty input" << std::endl;
+			std::cerr << "AVM: Warning: Empty input" << std::endl;
 	}
 }
 
@@ -45,7 +45,7 @@ void						IO::parse(std::string file_name, CPU & cpu)
 
 	this->_source_name = file_name;
 	if (this->verbose && (file_parts.size() < 2 || file_parts.back() != "avm"))
-		std::cout << "AVM: Warning: Incorrect file extension" << std::endl;
+		std::cerr << "AVM: Warning: Incorrect file extension" << std::endl;
 	file.open(file_name);
 	if (file.good())
 	{
@@ -64,24 +64,30 @@ void						IO::parse(std::string file_name, CPU & cpu)
 			catch (std::exception & e)
 			{
 				if (this->verbose)
-					std::cout << "AVM: '" << file_name << "': Line " << this->_line << ": " << e.what() << std::endl;
+					std::cerr << "AVM: '" << file_name << "': Line " << this->_line << ": " << e.what() << std::endl;
 			}
 	}
 	else if (this->verbose)
-		std::cout << "AVM: " << file_name << ": No such file or directory!" << std::endl;
+		std::cerr << "AVM: " << file_name << ": No such file or directory!" << std::endl;
 	file.close();
 }
 
 void						IO::parse(CPU & cpu)
 {
+	std::string			line;
+	std::stringstream	buf;
+	std::streambuf		* saved_cout_stream = std::cout.rdbuf();
 	this->_source_name.erase(this->_source_name.begin(), this->_source_name.end());
-	std::string		line;
 
-	while (this->quit == false && getline(std::cin, line))
+	std::cout.rdbuf(buf.rdbuf());
+
+	while (getline(std::cin, line))
 		try
 		{
 			this->_line++;
-			if (line[0] == ';')
+			if (line.size() == 2 && line[0] == ';' && line[1] == ';')
+				break ;
+			else if (line[0] == ';')
 				continue ;
 			cpu.analyze(this->_trim(line));
 			if (line.empty() == false)
@@ -90,8 +96,10 @@ void						IO::parse(CPU & cpu)
 		catch (std::exception & e)
 		{
 			if (this->verbose)
-				std::cout << "AVM: Line " << this->_line << ": " << e.what() << std::endl;
+				std::cerr << "AVM: Line " << this->_line << ": " << e.what() << std::endl;
 		}
+	std::cout.rdbuf(saved_cout_stream);
+	std::cout << buf.rdbuf();
 }
 
 void						IO::reset_state(void)

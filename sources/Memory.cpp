@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:32 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:17:07 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 18:41:52 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			Memory::addValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] + *this->_data[this->_data.size() - 2];
+	const IOperand	* result = *this->_data[this->_data.size() - 2] + *this->_data[this->_data.size() - 1];
 
 	this->_data.pop_back();
 	this->_data.pop_back();
@@ -48,7 +48,7 @@ void			Memory::subValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] - *this->_data[this->_data.size() - 2];
+	const IOperand	* result = *this->_data[this->_data.size() - 2] - *this->_data[this->_data.size() - 1];
 
 	this->_data.pop_back();
 	this->_data.pop_back();
@@ -60,7 +60,7 @@ void			Memory::mulValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] * *this->_data[this->_data.size() - 2];
+	const IOperand	* result = *this->_data[this->_data.size() - 2] * *this->_data[this->_data.size() - 1];
 
 	this->_data.pop_back();
 	this->_data.pop_back();
@@ -72,7 +72,7 @@ void			Memory::divValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] / *this->_data[this->_data.size() - 2];
+	const IOperand	* result = *this->_data[this->_data.size() - 2] / *this->_data[this->_data.size() - 1];
 
 	this->_data.pop_back();
 	this->_data.pop_back();
@@ -84,11 +84,88 @@ void			Memory::modValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] % *this->_data[this->_data.size() - 2];
+	const IOperand	* result = *this->_data[this->_data.size() - 2] % *this->_data[this->_data.size() - 1];
 
 	this->_data.pop_back();
 	this->_data.pop_back();
 	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+}
+
+void			Memory::minValue(void)
+{
+	if (this->_data.size() < 2)
+		throw std::runtime_error("Stack capacity is lower than 2");
+
+	if (*this->_data[this->_data.size() - 1] < *this->_data[this->_data.size() - 2])
+		this->_data.pop_back();
+	else
+		this->_data.erase(this->_data.end() - 2, this->_data.end() - 1);
+}
+
+void			Memory::maxValue(void)
+{
+	if (this->_data.size() < 2)
+		throw std::runtime_error("Stack capacity is lower than 2");
+
+	if (*this->_data[this->_data.size() - 1] > *this->_data[this->_data.size() - 2])
+		this->_data.pop_back();
+	else
+		this->_data.erase(this->_data.end() - 2, this->_data.end() - 1);
+}
+
+void			Memory::avgValue(void)
+{
+	if (this->_data.size() < 2)
+		throw std::runtime_error("Stack capacity is lower than 2");
+
+	const IOperand	* result = this->_data[this->_data.size() - 2]->avg(*this->_data[this->_data.size() - 1]);
+
+	this->_data.pop_back();
+	this->_data.pop_back();
+	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+}
+
+void			Memory::powValue(void)
+{
+	if (this->_data.size() < 2)
+		throw std::runtime_error("Stack capacity is lower than 2");
+
+	const IOperand	* result = this->_data[this->_data.size() - 2]->pow(*this->_data[this->_data.size() - 1]);
+
+	this->_data.pop_back();
+	this->_data.pop_back();
+	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+}
+
+void			Memory::incValue(void)
+{
+	if (this->_data.size() < 1)
+		throw std::runtime_error("Stack is empty");
+
+	const IOperand	* result = *this->_data[this->_data.size() - 1] + *this->createOperand(IOperand::Int8, "1");
+
+	this->_data.pop_back();
+	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+}
+
+void			Memory::decValue(void)
+{
+	if (this->_data.size() < 1)
+		throw std::runtime_error("Stack is empty");
+
+	const IOperand	* result = *this->_data[this->_data.size() - 1] - *this->createOperand(IOperand::Int8, "1");
+
+	this->_data.pop_back();
+	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+}
+
+void			Memory::clearStack(void)
+{
+	if (this->_data.size() < 1)
+		throw std::runtime_error("Stack is empty");
+
+	while (!this->_data.empty())
+		this->_data.pop_back();
 }
 
 void			Memory::dump(void)

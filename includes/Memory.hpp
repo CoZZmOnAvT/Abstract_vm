@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:46:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:04:46 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 18:42:00 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ class Memory
 		void			mulValue(void);
 		void			divValue(void);
 		void			modValue(void);
+		void			minValue(void);
+		void			maxValue(void);
+		void			avgValue(void);
+		void			powValue(void);
+		void			incValue(void);
+		void			decValue(void);
+		void			clearStack(void);
 		void			dump(void);
 		void			print(void);
 		void			pop(void);
@@ -42,7 +49,7 @@ class Memory
 		void			runtimeOverflow(long double value, IOperand::eOperandType type) const;
 		void			runtimeOverflow(long long value, IOperand::eOperandType type) const;
 	private:
-		std::vector < std::unique_ptr<const IOperand> > _data;
+		std::deque < std::unique_ptr<const IOperand> > _data;
 
 		void			_check_value(std::string const & value, IOperand::eOperandType type) const;
 

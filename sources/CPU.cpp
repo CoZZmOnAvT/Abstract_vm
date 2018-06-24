@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:27:59 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/23 19:13:12 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/06/24 18:41:13 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	CPU::start(int ac, char *av[])
 	catch (std::exception & e)
 	{
 		if (std::string(e.what()).empty() == false)
-			std::cout << "AVM: " << e.what() << std::endl;
+			std::cerr << "AVM: " << e.what() << std::endl;
 		exit(-1);
 	}
 }
@@ -51,7 +51,7 @@ void	CPU::analyze(const std::string & s)
 	if (s.empty())
 		return ;
 
-	std::regex	expr("\\s*([^\\s()]+)(\\s+([^\\s()]*)\\(([^\\s())]*)\\))?\\s*");
+	std::regex	expr("\\s*([^\\s();]+)(\\s+([^\\s();]*)\\(([^\\s();)]*)\\))?\\s*(;.*)?");
 	std::smatch sm;
 
 	if (std::regex_match(s, sm, expr))
@@ -73,10 +73,14 @@ void	CPU::_action(std::string cmd)
 		return ;
 	}
 	std::unordered_map < std::string, void(Memory::*)() >	cmds = {
-		{"add", &Memory::addValue}, {"sub", &Memory::subValue},
-		{"mul", &Memory::mulValue}, {"div", &Memory::divValue},
-		{"mod", &Memory::modValue}, {"dump", &Memory::dump},
-		{"print", &Memory::print}, {"pop", &Memory::pop}
+		{"add",   &Memory::addValue},   {"sub",   &Memory::subValue},
+		{"mul",   &Memory::mulValue},   {"div",   &Memory::divValue},
+		{"mod",   &Memory::modValue},   {"dump",  &Memory::dump    },
+		{"print", &Memory::print   },   {"pop",   &Memory::pop     },
+		{"min",   &Memory::minValue},   {"max",   &Memory::maxValue},
+		{"avg",   &Memory::avgValue},   {"pow",   &Memory::powValue},
+		{"inc++", &Memory::incValue},   {"dec--", &Memory::decValue},
+		{"clear", &Memory::clearStack}
 	};
 
 	auto	it = cmds.find(cmd);
@@ -90,7 +94,7 @@ void	CPU::_action(std::string cmd, std::string type, std::string value)
 	static const std::unordered_map < std::string, IOperand::eOperandType >	types = {
 		{"int8", IOperand::Int8}, {"int16", IOperand::Int16},
 		{"int32", IOperand::Int32}, {"float", IOperand::Float},
-		{"double", IOperand::Double},
+		{"double", IOperand::Double}
 	};
 
 	auto	it = types.find(type);
