@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/22 12:48:36 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/24 18:39:00 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/07/02 14:48:31 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ class	Operand : public IOperand
 		bool				operator > (IOperand const & rhs) const
 		{
 			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
-					&& this->getValueFloat(&rhs) > static_cast<long double>(this->getValue()))
+					&& static_cast<long double>(this->_value) > this->getValueFloat(&rhs))
 				return (true);
-			else if (this->getValueInt(&rhs) > static_cast<long double>(this->getValue()))
+			else if (static_cast<long long>(this->_value) > this->getValueInt(&rhs))
 				return (true);
 			return (false);
 		}
@@ -73,9 +73,9 @@ class	Operand : public IOperand
 		bool				operator < (IOperand const & rhs) const
 		{
 			if ((rhs.getType() == IOperand::Float || rhs.getType() == IOperand::Double)
-					&& this->getValueFloat(&rhs) < static_cast<long double>(this->getValue()))
+					&& static_cast<long double>(this->_value) < this->getValueFloat(&rhs))
 				return (true);
-			else if (this->getValueInt(&rhs) < static_cast<long long>(this->getValue()))
+			else if (static_cast<long long>(this->_value) < this->getValueInt(&rhs))
 				return (true);
 			return (false);
 		}

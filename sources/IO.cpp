@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:21 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/24 13:57:04 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/07/02 14:59:52 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ void						IO::parse(std::string file_name, CPU & cpu)
 void						IO::parse(CPU & cpu)
 {
 	std::string			line;
-	std::stringstream	buf;
+	std::stringstream	cout_buff;
 	std::streambuf		* saved_cout_stream = std::cout.rdbuf();
 	this->_source_name.erase(this->_source_name.begin(), this->_source_name.end());
 
-	std::cout.rdbuf(buf.rdbuf());
+	std::cout.rdbuf(cout_buff.rdbuf());
 
 	while (getline(std::cin, line))
 		try
@@ -89,7 +89,8 @@ void						IO::parse(CPU & cpu)
 				break ;
 			else if (line[0] == ';')
 				continue ;
-			cpu.analyze(this->_trim(line));
+			if (this->quit == false)
+				cpu.analyze(this->_trim(line));
 			if (line.empty() == false)
 				this->_cmds++;
 		}
@@ -99,7 +100,7 @@ void						IO::parse(CPU & cpu)
 				std::cerr << "AVM: Line " << this->_line << ": " << e.what() << std::endl;
 		}
 	std::cout.rdbuf(saved_cout_stream);
-	std::cout << buf.rdbuf();
+	std::cout << cout_buff.rdbuf();
 }
 
 void						IO::reset_state(void)

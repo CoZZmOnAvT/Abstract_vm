@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:45:32 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/24 18:41:52 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/07/02 14:54:08 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ Memory::Memory(const Memory & obj)
 
 Memory			& Memory::operator = (const Memory & obj)
 {
-	for (ssize_t i = obj._data.size() - 1; i >= 0; i++)
-		this->_data.insert(this->_data.begin(), std::unique_ptr < const IOperand > (obj._data[i].get()));
+	this->_data = obj._data;
 	return (*this);
 }
 
@@ -36,11 +35,14 @@ void			Memory::addValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 2] + *this->_data[this->_data.size() - 1];
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *b + *a;
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::subValue(void)
@@ -48,11 +50,14 @@ void			Memory::subValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 2] - *this->_data[this->_data.size() - 1];
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *b - *a;
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::mulValue(void)
@@ -60,11 +65,14 @@ void			Memory::mulValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 2] * *this->_data[this->_data.size() - 1];
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *b * *a;
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::divValue(void)
@@ -72,11 +80,14 @@ void			Memory::divValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 2] / *this->_data[this->_data.size() - 1];
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *b / *a;
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::modValue(void)
@@ -84,11 +95,14 @@ void			Memory::modValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 2] % *this->_data[this->_data.size() - 1];
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *b % *a;
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::minValue(void)
@@ -96,10 +110,15 @@ void			Memory::minValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	if (*this->_data[this->_data.size() - 1] < *this->_data[this->_data.size() - 2])
-		this->_data.pop_back();
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
+
+	if (*a < *b)
+		this->_data.push(a);
 	else
-		this->_data.erase(this->_data.end() - 2, this->_data.end() - 1);
+		this->_data.push(b);
 }
 
 void			Memory::maxValue(void)
@@ -107,10 +126,15 @@ void			Memory::maxValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	if (*this->_data[this->_data.size() - 1] > *this->_data[this->_data.size() - 2])
-		this->_data.pop_back();
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
+
+	if (*a > *b)
+		this->_data.push(a);
 	else
-		this->_data.erase(this->_data.end() - 2, this->_data.end() - 1);
+		this->_data.push(b);
 }
 
 void			Memory::avgValue(void)
@@ -118,11 +142,14 @@ void			Memory::avgValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = this->_data[this->_data.size() - 2]->avg(*this->_data[this->_data.size() - 1]);
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = b->avg(*a);
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::powValue(void)
@@ -130,11 +157,14 @@ void			Memory::powValue(void)
 	if (this->_data.size() < 2)
 		throw std::runtime_error("Stack capacity is lower than 2");
 
-	const IOperand	* result = this->_data[this->_data.size() - 2]->pow(*this->_data[this->_data.size() - 1]);
+	auto	a = this->_data.top();
+	this->_data.pop();
+	auto	b = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = b->pow(*a);
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::incValue(void)
@@ -142,10 +172,12 @@ void			Memory::incValue(void)
 	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] + *this->createOperand(IOperand::Int8, "1");
+	auto	a = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *a + *this->createOperand(IOperand::Int8, "1");
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::decValue(void)
@@ -153,10 +185,12 @@ void			Memory::decValue(void)
 	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
 
-	const IOperand	* result = *this->_data[this->_data.size() - 1] - *this->createOperand(IOperand::Int8, "1");
+	auto	a = this->_data.top();
+	this->_data.pop();
 
-	this->_data.pop_back();
-	this->_data.push_back(std::unique_ptr<const IOperand>(result));
+	const IOperand	* result = *a - *this->createOperand(IOperand::Int8, "1");
+
+	this->_data.push(std::shared_ptr<const IOperand>(result));
 }
 
 void			Memory::clearStack(void)
@@ -165,13 +199,13 @@ void			Memory::clearStack(void)
 		throw std::runtime_error("Stack is empty");
 
 	while (!this->_data.empty())
-		this->_data.pop_back();
+		this->_data.pop();
 }
 
 void			Memory::dump(void)
 {
-	for (ssize_t i = this->_data.size() - 1; i >= 0; i--)
-		std::cout << this->_data[i]->toString() << std::endl;
+	for (auto tmp = this->_data; !tmp.empty(); tmp.pop())
+		std::cout << tmp.top()->toString() << std::endl;
 }
 
 void			Memory::print(void)
@@ -179,7 +213,7 @@ void			Memory::print(void)
 	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
 
-	std::unique_ptr<const IOperand>	* val = &this->_data.back();
+	std::shared_ptr<const IOperand>	* val = &this->_data.top();
 	std::unordered_map < IOperand::eOperandType, std::string > types = {
 		{IOperand::Int16, "int16"}, {IOperand::Int32, "int32"},
 		{IOperand::Float, "float"}, {IOperand::Double, "double"},
@@ -194,13 +228,13 @@ void			Memory::pop(void)
 {
 	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
-	this->_data.pop_back();
+	this->_data.pop();
 }
 
 void			Memory::pushValue(const IOperand * op)
 {
 	if (op != NULL)
-		this->_data.push_back(std::unique_ptr<const IOperand>(op));
+		this->_data.push(std::shared_ptr<const IOperand>(op));
 }
 
 
@@ -208,7 +242,7 @@ void			Memory::assertValue(const IOperand * op) const
 {
 	if (this->_data.size() < 1)
 		throw std::runtime_error("Stack is empty");
-	if (op != NULL && *op == *this->_data.back())
+	if (op != NULL && *op == *this->_data.top())
 		return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 17:20:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/24 14:00:55 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/07/02 14:06:58 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <regex>
 # include <vector>
-# include <deque>
+# include <stack>
 # include <iostream>
 # include <fstream>
 # include <string>

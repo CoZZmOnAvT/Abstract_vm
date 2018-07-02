@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 18:46:20 by pgritsen          #+#    #+#             */
-/*   Updated: 2018/06/24 18:42:00 by pgritsen         ###   ########.fr       */
+/*   Updated: 2018/07/02 14:03:27 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Memory
 		void			runtimeOverflow(long double value, IOperand::eOperandType type) const;
 		void			runtimeOverflow(long long value, IOperand::eOperandType type) const;
 	private:
-		std::deque < std::unique_ptr<const IOperand> > _data;
+		std::stack < std::shared_ptr<const IOperand> > _data;
 
 		void			_check_value(std::string const & value, IOperand::eOperandType type) const;
 
