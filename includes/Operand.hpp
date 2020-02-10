@@ -13,6 +13,7 @@
 #ifndef OPERAND_HPP
 # define OPERAND_HPP
 
+#include <cmath>
 #include "avm.hpp"
 #include "IOperand.hpp"
 
